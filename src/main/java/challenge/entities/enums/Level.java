@@ -22,6 +22,6 @@ public enum Level {
 				return value;
 			}
 		}
-		throw new IllegalArgumentException("Invalid Order Status Code");
+		throw new IllegalArgumentException("Invalid Level Status Code");
 	}
 }
