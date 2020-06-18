@@ -38,5 +38,4 @@ public class Event implements Serializable{
 	@Column(name="created_at")
 	@Getter @ Setter private Instant createdAt;
 	
-
 }
