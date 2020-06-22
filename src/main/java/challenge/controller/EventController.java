@@ -35,7 +35,7 @@ public class EventController {
 	public ResponseEntity<Event> findById(@PathVariable Long id){
 		Event obj = eventService.findById(id);
 		return ResponseEntity.ok().body(obj);
-	}
+	}	
 	
 	@PostMapping
 	public ResponseEntity<Event> insert(@RequestBody Event obj){
