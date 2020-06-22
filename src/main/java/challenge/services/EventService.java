@@ -10,7 +10,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import challenge.dto.EventDTO;
 import challenge.entities.Event;
+import challenge.mapper.EventMapper;
 import challenge.repositories.EventRepository;
 import challenge.services.exceptions.DatabaseException;
 import challenge.services.exceptions.ResourceNotFoundException;
@@ -21,18 +23,18 @@ public class EventService {
 	@Autowired
 	private EventRepository eventRepository;
 
-	public List<Event> findAll() {
-		return eventRepository.findAll();
+	public List<EventDTO> findAll() {
+		return EventMapper.eventListToeventDTOList(eventRepository.findAll());
 	}
 
-	public Event findById(Long id) {
+	public EventDTO findById(Long id) {
 
 		Optional<Event> optionalEvent = eventRepository.findById(id);
-		return optionalEvent.orElseThrow(() -> new ResourceNotFoundException(id));
+		return EventMapper.eventToEventDTO(optionalEvent.orElseThrow(() -> new ResourceNotFoundException(id)));
 	}
 
-	public Event insert(Event obj) {
-		return eventRepository.save(obj);
+	public EventDTO insert(Event event) {
+		return EventMapper.eventToEventDTO(eventRepository.save(event));
 	}
 
 	public void delete(Long id) {
@@ -44,23 +46,6 @@ public class EventService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
-	}
-
-	public Event update(Long id, Event obj) {
-		try {
-			Event entity = eventRepository.getOne(id);
-			updateData(entity, obj);
-			return eventRepository.save(entity);
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-	}
-
-	private void updateData(Event entity, Event obj) {
-		entity.setLevel(obj.getLevel());
-		entity.setDescription(obj.getDescription());
-		entity.setLog(obj.getLog());
-		entity.setOrigin(obj.getOrigin());
 	}
 
 }

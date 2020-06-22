@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import challenge.dto.EventDTO;
 import challenge.entities.Event;
+import challenge.mapper.EventMapper;
 import challenge.services.EventService;
 
 @RestController
@@ -27,22 +29,22 @@ public class EventController {
 	
 	@GetMapping
 	public ResponseEntity<List<Event>> findAll(){
-		List<Event> list = eventService.findAll();
-		return ResponseEntity.ok().body(list);
+		List<EventDTO> list = eventService.findAll();
+		return ResponseEntity.ok().body(EventMapper.eventDTOListToeventList(list));
 	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Event> findById(@PathVariable Long id){
-		Event obj = eventService.findById(id);
-		return ResponseEntity.ok().body(obj);
+		EventDTO eventDTO = eventService.findById(id);
+		return ResponseEntity.ok().body(EventMapper.eventDTOToEvent(eventDTO));
 	}	
 	
 	@PostMapping
-	public ResponseEntity<Event> insert(@RequestBody Event obj){
-		obj = eventService.insert(obj);
+	public ResponseEntity<Event> insert(@RequestBody EventDTO eventDTO){
+		eventDTO = eventService.insert(EventMapper.eventDTOToEvent(eventDTO));
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+				.buildAndExpand(eventDTO.getId()).toUri();
+		return ResponseEntity.created(uri).body(EventMapper.eventDTOToEvent(eventDTO));
 	}
 	
 	@DeleteMapping(value = "/{id}")
@@ -52,9 +54,9 @@ public class EventController {
 		
 	}
 	
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<Event> update(@PathVariable Long id, @RequestBody Event obj){
-		obj = eventService.update(id, obj);
+	/*@PutMapping(value = "/{id}")
+	public ResponseEntity<Event> update(@PathVariable Long id, @RequestBody EventDTO eventDTO){
+		Event event = eventService.update(id, obj);
 		return ResponseEntity.ok().body(obj);
-	}
+	}*/
 }
