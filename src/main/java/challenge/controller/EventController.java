@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -30,14 +31,25 @@ public class EventController {
 	@GetMapping
 	public ResponseEntity<List<Event>> findAll(){
 		List<EventDTO> list = eventService.findAll();
-		return ResponseEntity.ok().body(EventMapper.eventDTOListToeventList(list));
-	}
+		return ResponseEntity.ok().body(EventMapper.eventDTOListToEventList(list));}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Event> findById(@PathVariable Long id){
 		EventDTO eventDTO = eventService.findById(id);
 		return ResponseEntity.ok().body(EventMapper.eventDTOToEvent(eventDTO));
-	}	
+	}
+	
+	@GetMapping(value = "/findByDescription")
+	public ResponseEntity<List<Event>> findByDescription(@RequestParam("description") String description){
+		//List<EventDTO> list = eventService.findAll();
+		return ResponseEntity.ok().body(eventService.findByDescription(description));
+	}
+	
+	@GetMapping(value = "/orderBy")
+	public ResponseEntity<List<Event>> orderBy(@RequestParam("attribute") String attribute){
+		//List<EventDTO> list = eventService.findAll();
+		return ResponseEntity.ok().body(eventService.orderBy(attribute));
+	}
 	
 	@PostMapping
 	public ResponseEntity<Event> insert(@RequestBody EventDTO eventDTO){

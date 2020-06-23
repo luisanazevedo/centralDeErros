@@ -24,13 +24,21 @@ public class EventService {
 	private EventRepository eventRepository;
 
 	public List<EventDTO> findAll() {
-		return EventMapper.eventListToeventDTOList(eventRepository.findAll());
+		return (EventMapper.eventListToEventDTOList(eventRepository.findAll()));
 	}
 
 	public EventDTO findById(Long id) {
 
 		Optional<Event> optionalEvent = eventRepository.findById(id);
 		return EventMapper.eventToEventDTO(optionalEvent.orElseThrow(() -> new ResourceNotFoundException(id)));
+	}
+	
+	public List<Event> findByDescription(String description){
+		return eventRepository.findByDescription(description);
+	}
+	
+	public List<Event> orderBy(String order){
+		return eventRepository.orderBy(order);
 	}
 
 	public EventDTO insert(Event event) {

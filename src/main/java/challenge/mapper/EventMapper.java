@@ -36,11 +36,11 @@ public class EventMapper {
 		return event;
 	}
 	
-	public static List<EventDTO> eventListToeventDTOList(List<Event> events){
+	public static List<EventDTO> eventListToEventDTOList(List<Event> events){
 		return events.stream().map(event -> EventMapper.eventToEventDTO(event)).collect(Collectors.toList());
 	}
 	
-	public static List<Event> eventDTOListToeventList(List<EventDTO> eventsDTO){
+	public static List<Event> eventDTOListToEventList(List<EventDTO> eventsDTO){
 		return eventsDTO.stream().map(eventDTO -> EventMapper.eventDTOToEvent(eventDTO)).collect(Collectors.toList());
 	}
 
